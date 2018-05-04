@@ -16,12 +16,12 @@ object SentimentAnalysis {
     var consumerSecret = "RyCgiLKqP8kQjcwxJ8h9EQFzLGm3dL5n2eCTN9YpQ2RRYG3cd7"
     var accessToken = "931749427211128832-UJP8jUVAEieK0fP9mmHn5yuD4DiGi8M"
     var accessTokenSecret = "TAuHxwpL6FghEom8IDUtQTQPUeHik6nxhjmhzvyGlfGUk"
-    //var filters = Seq("Trump")
+//    var filters = Seq("Trump")
 
   if (args.length > 3) {
       // get data from your setting
     val  Array(consumerKey, consumerSecret, accessToken, accessTokenSecret) = args.take(4)
-      filters = args.takeRight(args.length - 4)
+//      filters = args.takeRight(args.length - 4)
     }
 
 
