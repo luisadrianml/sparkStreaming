@@ -35,7 +35,8 @@ object SentimentAnalysis {
     // Set twitter stream
     val sparkConf = new SparkConf().setAppName("Twitter").setMaster("local[2]")
     val ssc = new StreamingContext(sparkConf, Seconds(5))
-    val stream = TwitterUtils.createStream(ssc, None, filters)
+    val stream = TwitterUtils.createStream(ssc, None)      //filters was inside the stream
+
 
     //val tags = stream.flatMap { status => status.getHashtagEntities.map(_.getText)}
       
