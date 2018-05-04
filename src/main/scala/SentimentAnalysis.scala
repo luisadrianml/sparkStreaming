@@ -40,7 +40,7 @@ object SentimentAnalysis {
 
     //val tags = stream.flatMap { status => status.getHashtagEntities.map(_.getText)}
       
-    val alltweets = stream.flatMap(status => status.getText.split(" "))
+    val alltweets = stream.flatMap(status => status.getText.split(" ").filter(_.startsWith("#")))
 
 val topCounts120 = alltweets.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(120)).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
 val topCounts30 = alltweets.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(30)).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
