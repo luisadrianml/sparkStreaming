@@ -16,6 +16,7 @@ object SentimentAnalysis {
     var consumerSecret = "RyCgiLKqP8kQjcwxJ8h9EQFzLGm3dL5n2eCTN9YpQ2RRYG3cd7"
     var accessToken = "931749427211128832-UJP8jUVAEieK0fP9mmHn5yuD4DiGi8M"
     var accessTokenSecret = "TAuHxwpL6FghEom8IDUtQTQPUeHik6nxhjmhzvyGlfGUk"
+    var amountOfTime = 120;
 //    var filters = Seq("Trump")
 
   if (args.length > 3) {
@@ -40,7 +41,7 @@ object SentimentAnalysis {
 
     val tags = stream.flatMap { status => status.getHashtagEntities.map(_.getText)}
       
-    val countTags = tags.map((_, 1)).reduceByKey(_ + _).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
+    val countTags = tags.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(amountOfTime), Seconds(60)).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
       
     // Print popular hashtags
     countTags.foreachRDD(rdd => {
