@@ -21,8 +21,9 @@ object SentimentAnalysis {
   if (args.length > 3) {
       // get data from your setting
     val  Array(consumerKey, consumerSecret, accessToken, accessTokenSecret) = args.take(4)
-      time = toInt(args.takeRight(args.length - 4))
-      if (time==0) {
+      ArrayTime = args.takeRight(args.length - 4)
+      time = toInt(ArrayTime(0).toString)
+      if(time==0) {
           time = 120;
       }
     }
@@ -59,7 +60,7 @@ object SentimentAnalysis {
 
   }
     
-    def toInt(s: Unit): Int = {
+    def toInt(s: String): Int = {
       try {
         s.toString.toInt
       } catch {
