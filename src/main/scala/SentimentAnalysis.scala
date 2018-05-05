@@ -40,7 +40,7 @@ object SentimentAnalysis {
     val ssc = new StreamingContext(sparkConf, Seconds(5))
     val stream = TwitterUtils.createStream(ssc, None)      //filters was inside the stream
 
-    val tags = stream.flatMap { status => status.getHashtagEntities.map(_.getText)}
+    val tags = stream.flatMap { status => status.getHashtagEntities.map(_.getText.toLowerCase)}
       
     val topCount = tags.map((_, 1)).reduceByKeyAndWindow((a:Int,b:Int) => (a + b), Seconds(time),Seconds(time)).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
       
