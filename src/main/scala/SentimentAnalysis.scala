@@ -16,16 +16,14 @@ object SentimentAnalysis {
     var consumerSecret = "eA5vufQY7Kr24wxziRLQV8LVTjY61X1J0REA90ULfkGOaE1ema"
     var accessToken = "79481024-t0FHjhajmtNZPZoatkfX8CuUOBCEgD8UDL5pzvRN7"
     var accessTokenSecret = "LX9NSy1MzPLl1HvAEztvhBaQvSo46TqXdpvygjIyN4jbT"
-    var time = 0;
+    var filters = Seq("120");
+    var time = 120;
 
   if (args.length > 3) {
       // get data from your setting
     val  Array(consumerKey, consumerSecret, accessToken, accessTokenSecret) = args.take(4)
-      ArrayTime = args.takeRight(args.length - 4)
-      time = toInt(ArrayTime(0).toString)
-      if(time==0) {
-          time = 120;
-      }
+      filters = args.takeRight(args.length - 4)
+      time = toInt(filters(0).toString)
     }
 
     // Set the system properties so that Twitter4j library used by twitter stream
@@ -64,7 +62,7 @@ object SentimentAnalysis {
       try {
         s.toString.toInt
       } catch {
-        case e: Exception => 0
+        case e: Exception => 120
       }
 }
 
