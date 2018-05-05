@@ -38,27 +38,16 @@ object SentimentAnalysis {
     val stream = TwitterUtils.createStream(ssc, None)      //filters was inside the stream
 
 
-    //val tags = stream.flatMap { status => status.getHashtagEntities.map(_.getText)}
+    val tags = stream.flatMap { status => status.getHashtagEntities.map(_.getText)}
       
-    val alltweets = stream.flatMap(status => status.getText.split(" ").filter(_.startsWith("#")))
-
-val topCounts120 = alltweets.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(120)).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
-val topCounts30 = alltweets.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(30)).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
-
-
-//    // save tages to files
-//    tags.countByValue()
-//      .foreachRDD { rdd =>val now = org.joda.time.DateTime.now()
-//        val savepath = now.toString("yyyy_MM_dd__hh__mm")
-//        rdd.sortBy(_._2).map(x => (x, now)).saveAsTextFile(s"output/tags/$savepath")
-//      }
+    val countTags = tags.map((_, 1)).reduceByKey(_ + _).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
       
     // Print popular hashtags
-topCounts120.foreachRDD(rdd => {
-  val topList = rdd.take(10)
-  println("\nPopular topics in last 120 seconds (%s total):".format(rdd.count()))
-  topList.foreach{case (count, tag) => println("%s (%s tweets)".format(tag, count))}
-})
+    countTags.foreachRDD(rdd => {
+      val topList = rdd.take(10)
+      println("\nPopular topics:".format(rdd.count()))
+      topList.foreach{case (count, tag) => println("%s (%s tweets)".format(tag, count))}
+    })
 
 //
 //    // save whole live twitter in trump data
