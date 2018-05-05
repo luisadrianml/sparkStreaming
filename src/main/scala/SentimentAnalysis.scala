@@ -34,7 +34,7 @@ object SentimentAnalysis {
     System.setProperty("twitter4j.oauth.accessToken", accessToken)
     System.setProperty("twitter4j.oauth.accessTokenSecret", accessTokenSecret)
       
-    print(consumeKey)
+    print(consumerKey)
 
     // Set twitter stream
     val sparkConf = new SparkConf().setAppName("Twitter").setMaster("local[2]")
@@ -59,7 +59,7 @@ object SentimentAnalysis {
 
   }
     
-    def toInt(s: String): Int = {
+    def toInt(s: Unit): Int = {
       try {
         s.toInt
       } catch {
