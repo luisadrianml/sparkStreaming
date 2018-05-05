@@ -61,7 +61,7 @@ object SentimentAnalysis {
     
     def toInt(s: Unit): Int = {
       try {
-        s.toInt
+        s.toString.toInt
       } catch {
         case e: Exception => 0
       }
