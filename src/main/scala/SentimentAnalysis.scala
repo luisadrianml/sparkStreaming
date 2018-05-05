@@ -40,7 +40,7 @@ object SentimentAnalysis {
 
     val tags = stream.flatMap { status => status.getHashtagEntities.map(_.getText)}
       
-    val topCount = tags.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(120), Seconds(60)).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
+    val topCount = tags.map((_, 1)).reduceByKeyAndWindow(_ + _, Seconds(120)).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
       
     // Print popular hashtags
 topCount.foreachRDD(rdd => {
