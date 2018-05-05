@@ -40,14 +40,16 @@ object SentimentAnalysis {
 
     val tags = stream.flatMap { status => status.getHashtagEntities.map(_.getText)}
       
-    val topCount = tags.map((_, 1)).reduceByKeyAndWindow((a:Int,b:Int) => (a + b), Seconds(120),Seconds(120)).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
+    val topCount = tags.map((_, 1)).reduceByKeyAndWindow((a:Int,b:Int) => (a + b), Seconds(300),Seconds(60)).map{case (topic, count) => (count, topic)}.transform(_.sortByKey(false))
       
     // Print popular hashtags
 topCount.foreachRDD(rdd => {
   val topList = rdd.take(10)
-  println("\nPopular topics in last 120 seconds (%s total):".format(rdd.count()))
+  println("\nPopular topics in last 300 seconds every 60 minutes (%s total):".format(rdd.count()))
   topList.foreach{case (count, tag) => println("%s (%s tweets)".format(tag, count))}
 })
+      
+      topCount.saveAsTextFiles("output/populars/tags")
 
 //
 //    // save whole live twitter in trump data
